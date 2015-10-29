@@ -18,11 +18,11 @@ class MySoapServer
      * params - (valid) email, password
      */
 
-    function register($email, $password)
+    function register($confirmCode, $email, $password)
     {
         if (!isset($email, $password)) return $this->unknownError();
         $dbHandler = new DbHandler ();
-        $accountId = $dbHandler->createAccount($email, $password);
+        $accountId = $dbHandler->createAccount($confirmCode, $email, $password);
 
         if ($accountId == ACCOUNT_CREATE_FAILED) {
             $response ["success"] = FALSE;

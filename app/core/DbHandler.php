@@ -130,13 +130,15 @@ class DbHandler
     /**
      * Creating new Account
      *
+     * @param String $confirmCode
+     *            confirmation code
      * @param String $email
      *            bar login email
      * @param String $password
      *            bar login password
      * @return constant ('ACCOUNT_CREATED_SUCCESSFULLY', 'ACCOUNT_CREATE_FAILED', 'ACCOUNT_ALREADY_EXIST')
      */
-    public function createAccount($email, $password)
+    public function createAccount($confirmCode, $email, $password)
     {
         // First check if account already exist in db
         if (!$this->isAccountInDb($email)) {
@@ -146,12 +148,13 @@ class DbHandler
             // Generating API key
             $apiKey = $this->generateApiKey();
 
-            $STH = $this->connection->prepare("INSERT INTO Accounts(email, password, apiKey)
-					VALUES(:email, :password, :apiKey);");
+            $STH = $this->connection->prepare("INSERT INTO Accounts(email, password, apiKey, confirmationCode)
+					VALUES(:email, :password, :apiKey, :confirmCode);");
 
             $STH->bindParam(':email', $email);
             $STH->bindParam(':password', $passwordHash);
             $STH->bindParam(':apiKey', $apiKey);
+            $STH->bindParam(':confirmCode', $confirmCode);
 
             $result = $STH->execute();
 
