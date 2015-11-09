@@ -143,7 +143,7 @@ class DbHandler
         // First check if account already exist in db
         if (!$this->isAccountInDb($email)) {
             // Generating password hash
-            $passwordHash = PassHash::hash($password);
+            //$passwordHash = PassHash::hash($password);
 
             // Generating API key
             $apiKey = $this->generateApiKey();
@@ -152,7 +152,7 @@ class DbHandler
 					VALUES(:email, :password, :apiKey, :confirmCode);");
 
             $STH->bindParam(':email', $email);
-            $STH->bindParam(':password', $passwordHash);
+            $STH->bindParam(':password', $password);
             $STH->bindParam(':apiKey', $apiKey);
             $STH->bindParam(':confirmCode', $confirmCode);
 
