@@ -69,7 +69,7 @@ class DbHandler
     public function checkLogin($email, $password)
     {
         // fetching Account by email
-        $STH = $this->connection->prepare("SELECT password, apiKey FROM Accounts WHERE email = :email");
+        $STH = $this->connection->prepare("SELECT password, apiKey FROM Accounts WHERE email = :email AND confirmed = 1");
         $STH->bindParam(':email', $email);
         $STH->execute();
 
