@@ -113,8 +113,8 @@ class DbHandler
      */
     public function getAccountByEmail($email)
     {
-        $STH = $this->connection->prepare("SELECT idAccount, apiKey
-            FROM Accounts WHERE email=:email");
+        $STH = $this->connection->prepare("SELECT idAccount, apiKey,  date_format(date, '%Y-%m-%d') as date FROM Accounts a
+                INNER JOIN Payments p ON a.idPayment = p.idPayment WHERE email=:email");
         $STH->bindParam(':email', $email);
 
         if ($STH->execute()) {

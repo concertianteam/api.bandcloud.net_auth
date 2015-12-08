@@ -44,7 +44,8 @@ class MySoapServer
 
     function checkLogin($email, $password)
     {
-        if (!isset($email, $password)) return $this->unknownError();
+
+        if (!isset($email, $password)) return $response['status'] = INVALID_CREDENTIALS;
 
         $dbHandler = new DbHandler ();
         // check for correct email and password
@@ -53,14 +54,15 @@ class MySoapServer
             $account = $dbHandler->getAccountByEmail($email);
 
             if ($account != NULL) {
-                $response ["success"] = TRUE;
-                $response ['idAccount'] = $account ['idAccount'];
-                $response ['apiKey'] = $account ['apiKey'];
+                return Validation::isPaid($account);
+                /* $response ["success"] = TRUE;
+                 $response ['idAccount'] = $account ['idAccount'];
+                 $response ['apiKey'] = $account ['apiKey'];
 
-                return ClientEcho::echoResponse($response);
+                 return ClientEcho::echoResponse($response);*/
             } else {
                 // unknown error occured
-                return $this->unknownError();
+                return $response['status'] = ERROR;
             }
         }
     }
